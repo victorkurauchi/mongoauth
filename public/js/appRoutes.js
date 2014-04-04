@@ -8,16 +8,6 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 			controller: 'MainController'
 		})
 
-		.when('/nerds', {
-			templateUrl: 'views/nerd.html',
-			controller: 'NerdController'
-		})
-
-		.when('/geeks', {
-			templateUrl: 'views/geek.html',
-			controller: 'GeekController'	
-		})
-
 		.when('/petshop', {
 			templateUrl: 'views/petshop.html',
 			controller: 'PetshopController'	
@@ -33,9 +23,9 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 			controller: 'SignupController'	
 		})
 
-		.when('/profile', {
-			templateUrl: 'views/profile.html',
-			controller: 'ProfileController'	
+		.when('/pets', {
+			templateUrl: 'views/pets.html',
+			controller: 'PetController'	
 		});
 
 	$locationProvider.html5Mode(true);

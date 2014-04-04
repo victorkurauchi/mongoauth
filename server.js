@@ -2,8 +2,11 @@
 var express  = require('express');
 var app      = express();
 var mongoose = require('mongoose');
+
 // var passport = require('passport');
 // var flash    = require('connect-flash');
+
+var pet      = require('./app/routes/pets');
 
 // configuration ===========================================
 	
@@ -11,7 +14,7 @@ var mongoose = require('mongoose');
 var db = require('./config/db');
 
 var port = process.env.PORT || 8080; // set our port
-// mongoose.connect(db.url); // connect to our mongoDB database (commented out after you enter in your own credentials)
+mongoose.connect(db.url); // connect to our mongoDB database (commented out after you enter in your own credentials)
 
 app.configure(function() {
 	app.use(express.static(__dirname + '/public')); 	// set the static files location /public/img will be /img for users
@@ -27,8 +30,18 @@ app.configure(function() {
 });
 
 // routes ==================================================
-require('./app/routes')(app); // pass our application into our routes
+//require('./app/routes')(app); // pass our application into our routes
 //require('./config/passport')(passport); // pass passport for configuration
+
+app.get('/api/pets', pet.list);
+app.post('/api/pets', pet.create);
+app.get('/api/pets/:id', pet.retrieve);
+app.put('/api/pets/:id', pet.update);
+app.delete('/api/pets/:id', pet.delete);
+
+app.get('*', function(req, res) {
+  res.sendfile('./public/index.html');
+});
 
 // start app ===============================================
 app.listen(port);	
