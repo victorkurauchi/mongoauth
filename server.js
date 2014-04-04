@@ -1,7 +1,9 @@
 // modules =================================================
-var express = require('express');
-var app     = express();
-var mongoose= require('mongoose');
+var express  = require('express');
+var app      = express();
+var mongoose = require('mongoose');
+// var passport = require('passport');
+// var flash    = require('connect-flash');
 
 // configuration ===========================================
 	
@@ -16,10 +18,17 @@ app.configure(function() {
 	app.use(express.logger('dev')); 					// log every request to the console
 	app.use(express.bodyParser()); 						// pull information from html in POST
 	app.use(express.methodOverride()); 					// simulate DELETE and PUT
+
+  // required for passport
+  // app.use(express.session({ secret: 'kznfitness' })); // session secret
+  // app.use(passport.initialize());
+  // app.use(passport.session()); // persistent login sessions
+  // app.use(flash()); // use connect-flash for flash messages stored in session
 });
 
 // routes ==================================================
 require('./app/routes')(app); // pass our application into our routes
+//require('./config/passport')(passport); // pass passport for configuration
 
 // start app ===============================================
 app.listen(port);	
