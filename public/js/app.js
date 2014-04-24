@@ -2,11 +2,8 @@ angular.module('sampleApp',
   [ 'ngRoute', 
     'appRoutes', 
     'MainCtrl', 
-    'PetshopCtrl',
-    'PetshopService',
+    'UserCtrl',
+    //'UserService',
     'LoginCtrl',
-    'LoginService',
-    'SignupCtrl',
-    'PetCtrl',
-    'PetService'
+    'SignupCtrl'
   ]);

@@ -1,6 +1,6 @@
-angular.module('PetCtrl', []).controller('PetController', ['$scope', 'Pet', function($scope, Pet) {
+angular.module('UserCtrl', []).controller('UserController', ['$scope', function($scope) {
 
-  Pet.get().then(function(result) {
+  /*Pet.get().then(function(result) {
     $scope.pets = result.data;
   });
 
@@ -12,6 +12,10 @@ angular.module('PetCtrl', []).controller('PetController', ['$scope', 'Pet', func
       Pet.get();
     })
     
-  }
+  }*/
+
+  console.log('Controller Instanciada');
+
+  $scope.tagline = 'Olloko bixo.';
 
 }]);

@@ -1,46 +1,146 @@
-// app/models/user.js
-// load the things we need
-var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt-nodejs');
+var mongoose = require('mongoose'), 
+    Schema   = mongoose.Schema,
+    bcrypt   = require('bcrypt-nodejs'),
+    SALT_WORK_FACTOR = 10;
 
-// define the schema for our user model
 var userSchema = mongoose.Schema({
 
-    local            : {
-        email        : String,
-        password     : String,
-    },
-    facebook         : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
-    },
-    twitter          : {
-        id           : String,
-        token        : String,
-        displayName  : String,
-        username     : String
-    },
-    google           : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
-    }
+  name     : { type: String, required: true },
+
+  password : { type: String, required: true },
+
+  email    : { type: String, required: true },
+
+  birth    : { type: Date, default: Date.now() },
+
+  phone    : { type: String, default: '5555555'}
 
 });
 
-// methods ======================
-// generating a hash
-userSchema.methods.create = function(req, res) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+// userSchema.pre('save', function(next) {
+//   var user = this;
+
+//   // only hash the password if it has been modified (or is new)
+//   if (!user.isModified('password')) return next();
+
+
+
+//   // generate a salt
+//   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+//     if (err) return next(err);
+
+//     // hash the password using our new salt
+//     bcrypt.hash(user.password, salt, function(err, hash) {
+//         if (err) return next(err);
+
+//         // override the cleartext password with the hashed one
+//         user.password = hash;
+//         next();
+//     });
+//   });
+// });
+
+userSchema.methods.comparePassword = function(candidatePassword, cb) {
+    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+        if (err) return cb(err);
+        cb(null, isMatch);
+    });
 };
 
-// checking if password is valid
-userSchema.methods.validPassword = function(password) {
-    return bcrypt.compareSync(password, this.local.password);
+var Model = mongoose.model('User', userSchema);
+
+// User Methods
+exports.find = function(req, res) {
+
+  var query = {};
+
+  Model.find(query, function (err, users) {
+    if(err) {
+      console.log('Houve algum erro, tente novamente', err);
+    } else {
+
+      res.render('section/users', { 
+        usuarios: users, 
+        msg: 'Usuários retornados: ' +  users.length, 
+        title: 'Usuários Teste'
+      });
+    }
+  });
+}; 
+
+exports.retrieve = function(req, res) {
+
+  var id = req.params.id;
+  var query = {_id: id}
+
+  Model.findOne(query, function (err, user) {
+    console.log('achou algo?');
+    if(err) {
+      console.log('Houve algum erro, tente novamente', err);
+    } else {
+      res.json(user);
+    }
+  });
+
+}
+
+exports.create = function(req, res) {
+
+  var dados = req.body;
+  var model = new Model(dados);
+
+  model.save(function(err, data) {
+    if(err){
+      console.log(err);
+      // res.render('section/users', {msg: err})
+    } else {
+      console.log('sucesso');
+      res.redirect('/usuario');
+      // res.render('section/users', {
+      //   msg: 'Usuário cadastrado com sucesso'
+      // });
+    }
+  });
 };
 
-// create the model for users and expose it to our app
-module.exports = mongoose.model('User', userSchema);
+exports.update = function(req, res) {
+
+  var id    = req.params.id;
+  var dados = req.body;
+  var query = {_id: id};
+
+  console.log('id', id);
+  console.log('query', query);
+
+  Model.update(query, dados, function(err, user) {
+    if(err) {
+      console.log('erro', err);
+    } else {
+      console.log('sucesso', user);
+      res.json(user);
+    }
+  });
+
+}
+
+exports.delete = function(req, res) {
+
+  var id = req.params.id;
+  var query = {_id: id};
+
+  Model.remove({_id: id}, function(err, data) {
+    if(err) {
+      console.log(err);
+    } else {
+      res.json(data);
+    }
+  });
+}
+
+exports.login = function(req, res) {
+
+}
+
+exports.signup = function(req, res) {
+
+}

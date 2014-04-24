@@ -1,1 +1,10 @@
-body { padding-top:30px; }
+body {
+  padding-top: 50px;
+}
+.starter-template {
+  padding: 40px 15px;
+}
+.icons-list {
+  margin-right: 5px;
+  padding: 5px;
+}

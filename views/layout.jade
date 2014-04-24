@@ -1,0 +1,36 @@
+doctype html
+html(lang="pt-br")
+  head
+    meta(charset="utf8")
+    base(href='/')
+    title Node/Express/Mongo - G7Light
+
+    link(rel="stylesheet", href="libs/bootstrap/dist/css/bootstrap.min.css")
+    link(rel="stylesheet", href="css/style.css")
+
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js")
+    script(src="libs/bootstrap/dist/js/bootstrap.min.js")
+
+  body
+    div.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
+      div.container
+        div.navbar-header
+          button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar  
+            span.icon-bar
+          a.navbar-brand(href="#") Teste G7Light    
+    
+        div.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li.active
+              a(href="/") Home
+            li
+              a(href="/usuario") Usuários
+            li
+              a(href="/login") Entrar
+
+    div.container
+      div.starter-template
+        block body

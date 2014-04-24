@@ -4,28 +4,23 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 
 		// home page
 		.when('/', {
-			templateUrl: 'views/home.html',
+			templateUrl: 'views/section/teste',
 			controller: 'MainController'
 		})
 
-		.when('/petshop', {
-			templateUrl: 'views/petshop.html',
-			controller: 'PetshopController'	
-		})
-
 		.when('/login', {
-			templateUrl: 'views/login.html',
+			templateUrl: 'views/section/login',
 			controller: 'LoginController'	
 		})
 
 		.when('/signup', {
-			templateUrl: 'views/signup.html',
+			templateUrl: 'views/section/signup',
 			controller: 'SignupController'	
 		})
 
-		.when('/pets', {
-			templateUrl: 'views/pets.html',
-			controller: 'PetController'	
+		.when('/usuario', {
+			templateUrl: 'views/section/users',
+			controller: 'UserController'	
 		});
 
 	$locationProvider.html5Mode(true);

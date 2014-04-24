@@ -1,0 +1,67 @@
+extends ../layout
+
+block body
+
+  p= msg
+
+  div
+    table.table.table-responsive.table-hover
+      thead
+        tr
+          th Nome
+          th Email
+          th Idade
+          th Telefone
+          th Opções
+      tbody
+        for u in usuarios
+          tr
+            td #{u.name}
+            td #{u.email}
+            td #{u.birth}
+            td #{u.phone}
+            td 
+              a(href="").icons-list
+                span.glyphicon.glyphicon-pencil
+              a(href="").icons-list
+                span.glyphicon.glyphicon-remove
+
+  button.btn.btn-primary.pull-right(data-toggle="modal", data-target="#cadastro") Cadastrar 
+    span.glyphicon.glyphicon-plus
+
+  div.modal.fade#cadastro(tabindex="-1", role="dialog", aria-labelledby="cadastro", aria-hidden="true")
+    div.modal-dialog
+      div.modal-content
+        div.modal-header
+          button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+          h4 Novo usuário
+
+        div.modal-body
+          form(role="form", method="post", action="/api/user")
+            div.form-group
+              label Nome
+              input(type="text", class="form-control", name="name", required="true")
+
+            div.form-group
+              label Email
+              input(type="email", class="form-control", name="email", placeholder="foo@bar.com", required="true")
+
+            div.form-group
+              label Senha
+              input(type="password", class="form-control", name="password", required="true")
+
+            div.form-group
+              label Nascimento
+              input(type="date", class="form-control", name="birth", required="true")
+
+            div.form-group
+              label Fone
+              input(type="tel", class="form-control", name="phone", required="true")
+
+            hr
+
+            button.btn.btn-default(type="button", data-dismiss="modal") Cancelar
+            input.btn.btn-success(type="submit", value="Cadastrar") 
+
+        div.modal-footer
+          
