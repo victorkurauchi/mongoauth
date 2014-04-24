@@ -8,12 +8,14 @@ block body
 
     form(method="post", action="/login")
 
+      p= msg
+
       div.form-group
         label Email
-        input(type="text", class="form-control", name="email")
+        input(type="text", class="form-control", name="email", required="true")
 
       div.form-group
         label Password
-        input(type="password", class="form-control", name="password")
+        input(type="password", class="form-control", name="password", required="true")
 
       button(type="submit").btn.btn-warning.btn-lg Login

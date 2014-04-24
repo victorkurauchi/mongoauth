@@ -32,8 +32,13 @@ html(lang="pt-br")
 
           ul.nav.navbar-nav.pull-right
             li
-              a(href="/login") Acesso 
-                span.glyphicon.glyphicon-user
+              - if (loggedIn) {
+                a(href="/logout") Sair 
+                  span.glyphicon.glyphicon-off
+              - } else {
+                a(href="/login") Acesso 
+                  span.glyphicon.glyphicon-user
+              - }
 
     div.container
       div.starter-template

@@ -1,51 +1,16 @@
 var mongoose = require('mongoose'), 
     Schema   = mongoose.Schema,
-    bcrypt   = require('bcrypt-nodejs'),
-    SALT_WORK_FACTOR = 10;
+    auth     = require('./Auth.js');
 
 var userSchema = mongoose.Schema({
 
   name     : { type: String, required: true },
-
   password : { type: String, required: true },
-
   email    : { type: String, required: true },
-
   birth    : { type: Date, default: Date.now() },
-
   phone    : { type: String, default: '5555555'}
 
 });
-
-// userSchema.pre('save', function(next) {
-//   var user = this;
-
-//   // only hash the password if it has been modified (or is new)
-//   if (!user.isModified('password')) return next();
-
-
-
-//   // generate a salt
-//   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-//     if (err) return next(err);
-
-//     // hash the password using our new salt
-//     bcrypt.hash(user.password, salt, function(err, hash) {
-//         if (err) return next(err);
-
-//         // override the cleartext password with the hashed one
-//         user.password = hash;
-//         next();
-//     });
-//   });
-// });
-
-userSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
-};
 
 var Model = mongoose.model('User', userSchema);
 
@@ -59,11 +24,15 @@ exports.find = function(req, res) {
       console.log('Houve algum erro, tente novamente', err);
     } else {
 
-      res.render('section/users', { 
-        usuarios: users, 
-        msg: 'Usuários retornados do Mongodb @modulus.io: ' +  users.length, 
-        title: 'Usuários Teste'
-      });
+      if (req.session.user == null) {
+        res.render('index', {errorMsg: 'Acesso negado, por favor faça seu login' });
+      } else {
+        res.render('section/users', { 
+          usuarios: users, 
+          msg: 'Usuários retornados do Mongodb: ' +  users.length, 
+          title: 'Usuários Teste'
+        });
+      }
     }
   });
 }; 
@@ -152,6 +121,29 @@ exports.showUpdate = function(req, res){
 };
 
 exports.login = function(req, res) {
+
+  var user = req.param('email'),
+      pass = req.param('password');
+
+  if (typeof user != 'undefined' && typeof pass != 'undefined') {
+
+    var query = Model.findOne().where('email').equals(user).where('password').equals(pass);
+
+    query.exec(function (err, user) {
+
+      if (err) {
+        res.render('section/login', {msg: 'Erro inesperado, tente novamente'});
+      } else {
+
+        if (!user) {
+          res.render('section/login', {msg: 'Ooooops, usuário/senha incorretos'});
+        } else {
+          req.session.user = user;
+          res.redirect('/account');
+        }
+      }
+    });
+  }
 
 }
 
