@@ -4,6 +4,9 @@ block body
 
   p= msg
   p= success
+  - if (errorMsg) {
+    div.alert.alert-danger= errorMsg
+  -}
 
   div
     table.table.table-responsive.table-hover
@@ -58,7 +61,7 @@ block body
 
             div.form-group
               label Fone
-              input(type="tel", class="form-control", name="phone", required="true")
+              input(type="number", class="form-control", name="phone", required="true")
 
             hr
 

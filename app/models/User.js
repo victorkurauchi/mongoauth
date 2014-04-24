@@ -14,8 +14,11 @@ var userSchema = mongoose.Schema({
 
 var Model = mongoose.model('User', userSchema);
 
-// User Methods
+// Listagem de usuarios
 exports.find = function(req, res) {
+
+  req.session.errorMsg = '';
+  req.session.successMsg = '';
 
   var query = {};
 
@@ -37,6 +40,7 @@ exports.find = function(req, res) {
   });
 }; 
 
+// Busca de um determinado usuario
 exports.retrieve = function(req, res) {
 
   var id = req.params.id;
@@ -53,25 +57,40 @@ exports.retrieve = function(req, res) {
 
 }
 
+// Criação de usuario
 exports.create = function(req, res) {
 
   var dados = req.body;
-  var model = new Model(dados);
 
-  model.save(function(err, data) {
-    if(err){
-      console.log(err);
-      // res.render('section/users', {msg: err})
-    } else {
-      console.log('sucesso');
-      res.redirect('/usuario');
-      // res.render('section/users', {
-      //   msg: 'Usuário cadastrado com sucesso'
-      // });
-    }
-  });
+  dados.password = auth.md5(dados.password);
+
+  var regexPattern = new RegExp('^(0|[1-9][0-9]*)$');
+
+  console.log(regexPattern.test(dados.phone));
+
+  if (! dados.phone.match(regexPattern) ) {
+    req.session.errorMsg = 'Fone deve conter apenas números';
+    res.redirect('/usuario');
+  } else {
+    var model = new Model(dados);
+
+    model.save(function(err, data) {
+      if(err){
+        console.log(err);
+        res.render('section/users', {msg: err})
+      } else {
+        console.log('sucesso');
+        res.redirect('/usuario');
+        // res.render('section/users', {
+        //   msg: 'Usuário cadastrado com sucesso'
+        // });
+      }
+    });
+  }
+  
 };
 
+// Modificação de usuario
 exports.update = function(req, res) {
 
   var id    = req.params.id;
@@ -90,6 +109,7 @@ exports.update = function(req, res) {
 
 }
 
+// Remoção de usuario
 exports.delete = function(req, res) {
 
   var id = req.params.id;
@@ -105,6 +125,7 @@ exports.delete = function(req, res) {
   });
 }
 
+// Exibir pagina de update
 exports.showUpdate = function(req, res){
   var id = req.params.id;
 
@@ -120,10 +141,11 @@ exports.showUpdate = function(req, res){
   });
 };
 
+// Login de usuario
 exports.login = function(req, res) {
 
   var user = req.param('email'),
-      pass = req.param('password');
+      pass = auth.md5(req.param('password'));
 
   if (typeof user != 'undefined' && typeof pass != 'undefined') {
 

@@ -24,8 +24,10 @@ app.use(express.session({ secret: 'secretttttttt' }));
 
 app.use(function(req, res, next) {
 
-  res.locals.loggedIn = req.session.user ? true : false;
+  res.locals.loggedIn   = req.session.user ? true : false;
   res.locals.loggedUser = req.session.user ? req.session.user : null;
+  res.locals.errorMsg   = req.session.errorMsg;
+
   next();
 })
 
