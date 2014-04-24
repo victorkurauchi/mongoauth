@@ -27,11 +27,13 @@ app.get('/api/user/:id', user.retrieve);
 app.put('/api/user/:id', user.update);
 app.delete('/api/user/:id', user.delete);
 
+// Views
 app.get('/', function(req, res) {
   res.render('index');
 });
 
 app.get('/usuario', user.list);
+app.get('/user/update/:id', user.showUpdate);
 
 // signup
 app.post('/signup', user.signup);

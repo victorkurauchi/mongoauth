@@ -20,6 +20,10 @@ exports.delete = function(req, res) {
   _model.delete(req, res);
 }
 
+exports.showUpdate = function(req, res) {
+  _model.showUpdate(req, res);
+}
+
 exports.login = function(req, res) {
   _model.login(req, res);
 }

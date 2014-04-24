@@ -61,7 +61,7 @@ exports.find = function(req, res) {
 
       res.render('section/users', { 
         usuarios: users, 
-        msg: 'Usuários retornados: ' +  users.length, 
+        msg: 'Usuários retornados do Mongodb @modulus.io: ' +  users.length, 
         title: 'Usuários Teste'
       });
     }
@@ -109,15 +109,13 @@ exports.update = function(req, res) {
   var dados = req.body;
   var query = {_id: id};
 
-  console.log('id', id);
-  console.log('query', query);
-
   Model.update(query, dados, function(err, user) {
     if(err) {
       console.log('erro', err);
     } else {
-      console.log('sucesso', user);
-      res.json(user);
+      console.log('sucesso');
+      req.success = 'Usuário atualizado com sucesso';
+      res.redirect('/usuario');
     }
   });
 
@@ -132,10 +130,26 @@ exports.delete = function(req, res) {
     if(err) {
       console.log(err);
     } else {
-      res.json(data);
+      req.success = 'Usuário removido com sucesso';
+      res.redirect('/usuario');
     }
   });
 }
+
+exports.showUpdate = function(req, res){
+  var id = req.params.id;
+
+  var query = {_id: id};
+
+  Model.findOne(query, function (err, user) {
+    if(err) {
+      console.log(err);
+      return err;
+    } else {
+      res.render('section/update', {usuario: user});
+    }
+  });
+};
 
 exports.login = function(req, res) {
 

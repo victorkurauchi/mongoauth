@@ -1,9 +1,0 @@
-angular.module('sampleApp', 
-  [ 'ngRoute', 
-    'appRoutes', 
-    'MainCtrl', 
-    'UserCtrl',
-    //'UserService',
-    'LoginCtrl',
-    'SignupCtrl'
-  ]);

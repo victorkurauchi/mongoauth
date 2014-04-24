@@ -1,0 +1,30 @@
+extends ../layout
+
+block body
+
+  form(role="form", method="post", action='/api/user/#{usuario._id}')
+    div.form-group
+      label Nome
+      input(type="text", class="form-control", name="name", value="#{usuario.name}")
+
+    div.form-group
+      label Email
+      input(type="email", class="form-control", name="email", placeholder="foo@bar.com", value="#{usuario.email}")
+
+    div.form-group
+      label Senha
+      input(type="password", class="form-control", name="password", value="#{usuario.password}")
+
+    div.form-group
+      label Nascimento
+      input(type="date", class="form-control", name="birth", value="#{usuario.birth}")
+
+    div.form-group
+      label Fone
+      input(type="tel", class="form-control", name="phone", value="#{usuario.phone}")
+
+    hr
+
+    button.btn.btn-default(type="button", data-dismiss="modal") Cancelar
+    input.btn.btn-success(type="submit", value="Atualizar") 
+    input(type='hidden', name='_method', value='PUT')

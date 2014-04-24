@@ -3,6 +3,7 @@ extends ../layout
 block body
 
   p= msg
+  p= success
 
   div
     table.table.table-responsive.table-hover
@@ -21,14 +22,15 @@ block body
             td #{u.birth}
             td #{u.phone}
             td 
-              a(href="").icons-list
+              a(href="/user/update/#{u._id}").icons-list
                 span.glyphicon.glyphicon-pencil
-              a(href="").icons-list
+              a(href="", data-id="#{u._id}", data-toggle="modal", data-target="#exclusao").icons-list
                 span.glyphicon.glyphicon-remove
 
   button.btn.btn-primary.pull-right(data-toggle="modal", data-target="#cadastro") Cadastrar 
     span.glyphicon.glyphicon-plus
 
+  // Modal para cadastro
   div.modal.fade#cadastro(tabindex="-1", role="dialog", aria-labelledby="cadastro", aria-hidden="true")
     div.modal-dialog
       div.modal-content
@@ -62,6 +64,26 @@ block body
 
             button.btn.btn-default(type="button", data-dismiss="modal") Cancelar
             input.btn.btn-success(type="submit", value="Cadastrar") 
+
+        div.modal-footer
+
+  // Modal para exclusao
+  div.modal.fade#exclusao(tabindex="-1", role="dialog", aria-labelledby="exclusao", aria-hidden="true")
+    div.modal-dialog
+      div.modal-content
+        div.modal-header
+          button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+          h4 Confirmar exclusão?
+
+        div.modal-body
+          form#frmDelete(role="form", method="post")
+            p Após a confirmação, todos os dados deste usuário serão removidos permanentemente.
+
+            hr
+
+            button.btn.btn-default(type="button", data-dismiss="modal") Cancelar
+            input.btn.btn-success.pull-right(type="submit", value="Excluir") 
+            input(type='hidden', name='_method', value='DELETE')
 
         div.modal-footer
           
